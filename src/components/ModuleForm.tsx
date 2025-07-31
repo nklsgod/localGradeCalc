@@ -1,54 +1,61 @@
-import { useState } from 'react'
-import { Module } from '../types'
+import { useState } from "react";
+import { Module } from "../types";
 
 interface ModuleFormProps {
-  onAddModule: (module: Module) => void
+  onAddModule: (module: Module) => void;
 }
 
 const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
-  const [formData, setFormData] = useState<Omit<Module, 'grade'> & { grade: string }>({
-    moduleNumber: '',
-    moduleName: '',
+  const [formData, setFormData] = useState<
+    Omit<Module, "grade"> & { grade: string }
+  >({
+    moduleNumber: "",
+    moduleName: "",
     moduleECTS: 6,
     isFirstOrSecondYear: false,
-    grade: '',
-    modulePool: ''
-  })
+    grade: "",
+    modulePool: "",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!formData.moduleNumber || !formData.moduleName || !formData.grade || !formData.modulePool) {
-      alert('Please fill in all required fields')
-      return
+    e.preventDefault();
+
+    if (
+      !formData.moduleNumber ||
+      !formData.moduleName ||
+      !formData.grade ||
+      !formData.modulePool
+    ) {
+      alert("Please fill in all required fields");
+      return;
     }
 
-    const grade = parseFloat(formData.grade)
+    const grade = parseFloat(formData.grade);
     if (isNaN(grade) || grade < 1 || grade > 6) {
-      alert('Please enter a valid grade between 1 and 6')
-      return
+      alert("Please enter a valid grade between 1 and 6");
+      return;
     }
 
     const module: Module = {
       ...formData,
-      grade
-    }
+      grade,
+    };
 
-    onAddModule(module)
+    onAddModule(module);
     setFormData({
-      moduleNumber: '',
-      moduleName: '',
+      moduleNumber: "",
+      moduleName: "",
       moduleECTS: 6,
       isFirstOrSecondYear: false,
-      grade: '',
-      modulePool: ''
-    })
-  }
+      grade: "",
+      modulePool: "",
+    });
+  };
 
   return (
     <form className="module-form" onSubmit={handleSubmit}>
       <h2>Add Module</h2>
-      
+
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="moduleNumber">Module Number *</label>
@@ -56,7 +63,9 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
             type="text"
             id="moduleNumber"
             value={formData.moduleNumber}
-            onChange={(e) => setFormData({ ...formData, moduleNumber: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, moduleNumber: e.target.value })
+            }
             placeholder="e.g., CS101"
             required
           />
@@ -68,7 +77,9 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
             type="text"
             id="moduleName"
             value={formData.moduleName}
-            onChange={(e) => setFormData({ ...formData, moduleName: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, moduleName: e.target.value })
+            }
             placeholder="e.g., Introduction to Computer Science"
             required
           />
@@ -81,11 +92,19 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
           <select
             id="moduleECTS"
             value={formData.moduleECTS}
-            onChange={(e) => setFormData({ ...formData, moduleECTS: parseInt(e.target.value) as 3 | 6 | 9 })}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                moduleECTS: parseInt(e.target.value) as 3 | 5 | 6 | 9 | 10 | 15,
+              })
+            }
           >
             <option value={3}>3 ECTS</option>
+            <option value={5}>5 ECTS</option>
             <option value={6}>6 ECTS</option>
             <option value={9}>9 ECTS</option>
+            <option value={10}>10 ECTS</option>
+            <option value={15}>15 ECTS</option>
           </select>
         </div>
 
@@ -98,7 +117,9 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
             max="6"
             step="0.1"
             value={formData.grade}
-            onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, grade: e.target.value })
+            }
             placeholder="1.0 - 6.0"
             required
           />
@@ -112,7 +133,9 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
             type="text"
             id="modulePool"
             value={formData.modulePool}
-            onChange={(e) => setFormData({ ...formData, modulePool: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, modulePool: e.target.value })
+            }
             placeholder="e.g., Core, Elective, Minor"
             required
           />
@@ -124,7 +147,12 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
               type="checkbox"
               id="isFirstOrSecondYear"
               checked={formData.isFirstOrSecondYear}
-              onChange={(e) => setFormData({ ...formData, isFirstOrSecondYear: e.target.checked })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  isFirstOrSecondYear: e.target.checked,
+                })
+              }
             />
             First or Second Year (50% weight)
           </label>
@@ -135,7 +163,7 @@ const ModuleForm = ({ onAddModule }: ModuleFormProps) => {
         Add Module
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default ModuleForm
+export default ModuleForm;

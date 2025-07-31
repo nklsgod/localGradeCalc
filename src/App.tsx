@@ -1,12 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Module } from './types'
 import ModuleForm from './components/ModuleForm'
 import ModuleList from './components/ModuleList'
 import GradeDisplay from './components/GradeDisplay'
 import './App.css'
 
+const STORAGE_KEY = 'university-grade-calculator-modules'
+
 function App() {
-  const [modules, setModules] = useState<Module[]>([])
+  const [modules, setModules] = useState<Module[]>(() => {
+    // Initialize state with data from localStorage
+    const savedModules = localStorage.getItem(STORAGE_KEY)
+    if (savedModules) {
+      try {
+        return JSON.parse(savedModules) as Module[]
+      } catch (error) {
+        console.error('Error loading modules from localStorage:', error)
+      }
+    }
+    return []
+  })
+
+  // Save modules to localStorage whenever modules change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(modules))
+  }, [modules])
 
   const addModule = (module: Module) => {
     setModules([...modules, module])
