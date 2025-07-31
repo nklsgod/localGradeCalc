@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(npm create:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(timeout 10s npm run dev)"
+    ],
+    "deny": []
+  }
+}
